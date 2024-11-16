@@ -20,4 +20,4 @@ mysql_root_pass - Пароль для пользователя root БД.
 
     - hosts: servers
       roles:
-         - mariadb
+         - { role: mariadb, version_MariaDB: Версия MariaDB }
