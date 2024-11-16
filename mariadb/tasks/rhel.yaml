@@ -1,0 +1,23 @@
+---
+- name: add MariaDB repository
+  yum_repository:
+    name: MariaDB
+    description: MariaDB repository
+    file: MariaDB
+    baseurl: https://rpm.mariadb.org/{{ version_MariaDB }}/rhel/$releasever/$basearch
+    gpgkey: https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
+    gpgcheck: yes
+
+- name: Install MariaDB
+  dnf:
+    name:
+      - MariaDB-server
+      - MariaDB-client
+    state: latest
+    update_cache: yes
+
+- name: Install extension
+  dnf:
+    name:
+      - python3-PyMySQL
+    state: present

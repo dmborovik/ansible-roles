@@ -1,0 +1,5 @@
+---
+# tasks file for php
+- name: Deploy PHP on RHEL-based 
+  include_tasks: rhel.yaml
+  when: ansible_os_family == "RedHat"

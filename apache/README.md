@@ -1,7 +1,7 @@
-update_os
+apache
 =========
 
-Обновляет пакеты в операционной системе.
+Установка сервера apache
 
 Требования
 ------------
@@ -13,4 +13,4 @@ update_os
 
     - hosts: servers
       roles:
-         - update_os
+         - apache

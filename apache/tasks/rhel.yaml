@@ -1,0 +1,10 @@
+- name: Install apache
+  dnf:
+    name: httpd
+    state: latest
+    
+- name: start apache service
+  service:
+    name: httpd
+    state: started
+    enabled: true

@@ -1,0 +1,15 @@
+---
+- name: Import key for Remi repo
+  rpm_key:
+    key: http://rpms.remirepo.net/enterprise/9/RPM-GPG-KEY-remi
+    state: present
+
+- name: add remi repo for php
+  dnf: 
+    name: http://rpms.remirepo.net/enterprise/remi-release-9.rpm
+    state: present
+
+- name: Install PHP-"{{ php_version }}"                     
+  dnf:
+    name: '@php:remi-{{php_version}}'
+    state: present

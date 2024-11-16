@@ -1,0 +1,4 @@
+---
+# defaults file for mariadb
+version_MariaDB: 11.5
+mysql_root_pass: SuperSecretPass

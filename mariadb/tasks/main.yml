@@ -1,0 +1,50 @@
+---
+# tasks file for mariadb
+- name: Deploy MariaDB on RHEL
+  include_tasks: rhel.yaml
+  when: ansible_os_family == "RedHat"
+
+- name: Start and enable MariaDB
+  service:
+    name: mariadb
+    state: started
+    enabled: True
+
+- name: Secure Installation
+  block:
+    - name: Update root password
+      mysql_user:
+        name: root
+        host: "{{ item }}"
+        password: "{{ mysql_root_pass }}"
+        login_unix_socket: /var/lib/mysql/mysql.sock
+      with_items:
+        - 127.0.0.1
+        - ::1
+        - localhost
+
+    - name: set .my.cnf file
+      template:
+        src: my.cnf
+        dest: /root/.my.cnf
+        mode: 0600
+
+    - name: Delete anonymous MySQL user
+      mysql_user:
+        name: ""
+        host: "{{ item }}"
+        state: absent
+      with_items:
+        - localhost
+        - "{{ ansible_nodename }}"
+
+    - name: Delete hostname based MySQL user 
+      mysql_user:
+        name: root
+        host: "{{ ansible_nodename }}"
+        state: absent
+
+    - name: Remove MySQL test database
+      mysql_db:
+        name: test
+        state: absent
