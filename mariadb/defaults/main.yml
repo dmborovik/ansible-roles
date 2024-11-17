@@ -2,3 +2,11 @@
 # defaults file for mariadb
 version_MariaDB: 11.5
 mysql_root_pass: SuperSecretPass
+
+secure_install: True
+create_db: False
+create_user: False
+
+db_name: db_name
+db_user: db_user
+db_user_pass: SuperPassword

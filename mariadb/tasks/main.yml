@@ -48,3 +48,25 @@
       mysql_db:
         name: test
         state: absent
+  when: secure_install == True
+
+- name: Create database
+  mysql_db:
+    name: "{{ db_name }}"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_pass }}"
+  when: create_db == True
+
+- name: Create database user
+  mysql_user:
+    name: "{{ db_user }}"
+    password: "{{ db_user_pass }}" 
+    priv: "{{ db_name }}.*:ALL,GRANT"
+    host: localhost
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_pass }}"
+  when: create_user == True
+
+
