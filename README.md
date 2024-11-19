@@ -9,3 +9,5 @@
 - [mariadb](./mariadb/) - Установка БД MariaDB
 
 - [php](./php/) - Установка PHP
+
+- [java](./java/) - Установка Java

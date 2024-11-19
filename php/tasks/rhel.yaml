@@ -13,3 +13,10 @@
   dnf:
     name: '@php:remi-{{php_version}}'
     state: present
+
+- name: Install php-modules
+  dnf:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ php_modules }}"
+  when: php_modules is defined

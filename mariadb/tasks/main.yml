@@ -10,24 +10,25 @@
     state: started
     enabled: True
 
+- name: Update root password
+  mysql_user:
+    name: root
+    host: "{{ item }}"
+    password: "{{ mysql_root_pass }}"
+    login_unix_socket: /var/lib/mysql/mysql.sock
+  with_items:
+    - 127.0.0.1
+    - ::1
+    - localhost
+
+- name: set .my.cnf file
+  template:
+    src: my.cnf
+    dest: /root/.my.cnf
+    mode: 0600
+
 - name: Secure Installation
   block:
-    - name: Update root password
-      mysql_user:
-        name: root
-        host: "{{ item }}"
-        password: "{{ mysql_root_pass }}"
-        login_unix_socket: /var/lib/mysql/mysql.sock
-      with_items:
-        - 127.0.0.1
-        - ::1
-        - localhost
-
-    - name: set .my.cnf file
-      template:
-        src: my.cnf
-        dest: /root/.my.cnf
-        mode: 0600
 
     - name: Delete anonymous MySQL user
       mysql_user:
