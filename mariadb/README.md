@@ -6,26 +6,26 @@ mariadb
 Требования
 ------------
 
-- Almalinux 9
+- **Almalinux:** 8/9
 
 Переменные
 --------------
 
-- version_MariaDB: Версия БД.
+- *version_MariaDB:* Версия БД.
 
-- mysql_root_pass: Пароль для пользователя root БД.
+- *mysql_root_pass:* Пароль для пользователя root БД.
 
-- secure_install: Произвести настройки безопасности (True/False)
+- *secure_install:* Произвести настройки безопасности (True/False)
 
-- create_db: Создать ли базу (True/False)
+- *create_db:* Создать ли базу (True/False)
 
-- create_user: Создание пользователя (True/False)
+- *create_user:* Создание пользователя (True/False)
 
-- db_name: имя базы
+- *db_name:* имя базы
 
-- db_user: имя пользователя БД
+- *db_user:* имя пользователя БД
 
-- db_user_pass: пароль пользователя БД
+- *db_user_pass:* пароль пользователя БД
 
 Пример плэйбука
 ----------------

@@ -1,0 +1,3 @@
+---
+# defaults file for mongodb
+version_mongodb: 8.0

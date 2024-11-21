@@ -4,9 +4,10 @@
     name: MariaDB
     description: MariaDB repository
     file: MariaDB
-    baseurl: https://rpm.mariadb.org/{{ version_MariaDB }}/rhel/$releasever/$basearch
+    baseurl: https://rpm.mariadb.org/{{ version_MariaDB }}/centos/$releasever/$basearch
     gpgkey: https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
     gpgcheck: yes
+    module_hotfixes: 1 # Need for AlmaLinux 8
 
 - name: Install MariaDB
   dnf:

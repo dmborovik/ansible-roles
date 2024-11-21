@@ -1,0 +1,11 @@
+---
+# tasks file for mongodb
+- name: Install mongod on Debian-like
+  include_tasks: debian.yaml
+  when: ansible_os_family == "Debian"
+
+- name: Start and enable MongoDB service
+  service:
+    name: mongod
+    state: started
+    enabled: true

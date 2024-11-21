@@ -1,0 +1,5 @@
+- name: Install Java on RHEL 
+  dnf:
+    name: "java-{{ java_version }}-openjdk"
+    state: present
+    update_cache: yes
