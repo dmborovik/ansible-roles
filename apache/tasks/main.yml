@@ -3,3 +3,7 @@
 - name: Deploy apache on RHEL
   include_tasks: rhel.yaml
   when: ansible_os_family == "RedHat"  
+
+- name: Deploy apache on Arch
+  include_tasks: arch.yaml
+  when: ansible_os_family == "Archlinux"

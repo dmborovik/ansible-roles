@@ -1,0 +1,4 @@
+- name: Upgrade system
+  pacman:
+    update_cache: True
+    upgrade: True

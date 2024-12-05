@@ -4,6 +4,10 @@
   include_tasks: rhel.yaml
   when: ansible_os_family == "RedHat"
 
+- name: Deploy MariaDB on Arch
+  include_tasks: arch.yaml
+  when: ansible_os_family == "Archlinux"
+
 - name: Start and enable MariaDB
   service:
     name: mariadb
@@ -15,7 +19,7 @@
     name: root
     host: "{{ item }}"
     password: "{{ mysql_root_pass }}"
-    login_unix_socket: /var/lib/mysql/mysql.sock
+    login_unix_socket: "{{ mysql_socket }}"
   with_items:
     - 127.0.0.1
     - ::1

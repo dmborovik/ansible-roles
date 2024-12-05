@@ -2,12 +2,14 @@
 
 Коллекция ролей для ansible.
 
-- [update_os](./update_os/). Обновление операционной системы.
-
 - [apache](./apache/) - Установка Apache
+
+- [java](./java/) - Установка Java
 
 - [mariadb](./mariadb/) - Установка БД MariaDB
 
+- [mongodb](./mongodb/) - Установка MongoDB
+
 - [php](./php/) - Установка PHP
 
-- [java](./java/) - Установка Java
+- [update_os](./update_os/). Обновление операционной системы.

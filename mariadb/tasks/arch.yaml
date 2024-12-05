@@ -1,0 +1,14 @@
+- name: Install Extension 
+  pacman:
+    name: python-mysqlclient
+    state: present
+
+- name: Install MariaDB
+  pacman:
+    name: mysql
+    state: present
+    update_cache: True
+
+- name: Init data dir
+  shell: "mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql"
+  

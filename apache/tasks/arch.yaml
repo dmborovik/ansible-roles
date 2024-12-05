@@ -1,0 +1,11 @@
+- name: Install Apache
+  pacman:
+    name: apache
+    state: present
+    update_cache: true
+
+- name: Start Apache service
+  service:
+    name: httpd
+    state: started
+    enabled: True
