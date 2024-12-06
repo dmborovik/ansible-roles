@@ -1,0 +1,5 @@
+- name: Install NGINX
+  pacman:
+    name: nginx
+    state: present
+    update_cache: True

@@ -1,0 +1,11 @@
+---
+# tasks file for nginx
+- name: Install Nginx on Arch-based
+  include_tasks: arch.yaml
+  when: ansible_os_family == "Archlinux"
+
+- name: Start and enable Nginx
+  service:
+    name: nginx
+    state: started
+    enabled: true
