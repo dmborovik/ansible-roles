@@ -14,7 +14,7 @@ db_user_pass: SuperPassword
 mysql_socket: |-
   {%- if ansible_os_family == "RedHat" -%}
   /var/lib/mysql/mysql.sock
-  {%- elif ansible_os_family == "Archlinux" -%}
+  {%- elif ansible_os_family == "Archlinux" or ansible_os_family == "Debian" -%}
   /run/mysqld/mysqld.sock
   {%- endif -%}
 

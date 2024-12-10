@@ -1,0 +1,11 @@
+- name: Install MariaDB
+  apt:
+    name: mariadb-server
+    state: present
+    update_cache: True
+
+- name: Install extension
+  apt:
+    name: python3-pymysql
+    state: present
+    update_cache: True

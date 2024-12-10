@@ -8,6 +8,10 @@
   include_tasks: arch.yaml
   when: ansible_os_family == "Archlinux"
 
+- name: Deploy MariaDB on Debian
+  include_tasks: debian.yaml
+  when: ansible_os_family == "Debian"
+
 - name: Start and enable MariaDB
   service:
     name: mariadb
