@@ -8,6 +8,7 @@ mariadb
 
 - **Almalinux:** 8/9
 - **Arch**
+- **Debian:** 12
 
 Переменные
 --------------

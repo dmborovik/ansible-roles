@@ -1,0 +1,13 @@
+- name: Install lsphp{{ lsphp_version }}
+  apt:
+    name: lsphp{{ lsphp_version }}
+    state: present
+    update_cache: yes
+
+- name: Install lsphp{{ lsphp_version }} modules
+  apt:
+    name: "lsphp{{ lsphp_version }}-{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ lsphp_modules }}"
+  when: lsphp_modules is defined

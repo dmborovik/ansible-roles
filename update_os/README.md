@@ -6,8 +6,9 @@ update_os
 Требования
 ------------
 
-- **Almalinux** 9
+- **Almalinux:** 9
 - **ArchLinux**
+- **Ubuntu:** 24
 
 Пример плэйбука
 ----------------

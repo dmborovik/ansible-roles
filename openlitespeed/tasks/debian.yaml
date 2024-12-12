@@ -1,0 +1,11 @@
+- name: Add OpenLiteSpeed repo
+  apt_repository:
+    repo: deb http://rpms.litespeedtech.com/debian/ noble main
+    state: present
+    filename: lst_debian_repo.list
+
+- name: Install OpenLiteSpeed
+  apt:
+    name: openlitespeed
+    state: present
+    update_cache: yes

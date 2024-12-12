@@ -7,3 +7,7 @@
 - name: update Arch
   include_tasks: arch.yaml
   when: ansible_os_family == "Archlinux"
+
+- name: update Debian-like
+  include_tasks: debian.yaml
+  when: ansible_os_family == "Debian"
