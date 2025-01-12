@@ -8,7 +8,7 @@ update_os
 
 - **Almalinux:** 9
 - **ArchLinux**
-- **Ubuntu:** 24
+- **Ubuntu:** 22|24
 
 Пример плэйбука
 ----------------
