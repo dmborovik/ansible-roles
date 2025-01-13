@@ -6,7 +6,7 @@ update_os
 Требования
 ------------
 
-- **Almalinux:** 9
+- **Almalinux:** 8|9
 - **ArchLinux**
 - **Ubuntu:** 22|24
 

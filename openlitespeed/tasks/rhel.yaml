@@ -1,0 +1,15 @@
+- name: add OpenLiteSpeed Repository
+  yum_repository:
+    name: litespeed
+    description: OpenLiteSpeed repository
+    file: litespeed
+    baseurl: http://rpms.litespeedtech.com/centos/$releasever/$basearch
+    gpgkey: http://rpms.litespeedtech.com/centos/RPM-GPG-KEY-litespeed
+    gpgcheck: yes
+    module_hotfixes: 1 # Need for AlmaLinux 8
+
+- name: Install OpenLiteSpeed
+  dnf:
+    name: openlitespeed
+    state: present
+    update_cache: yes

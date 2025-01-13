@@ -4,6 +4,10 @@
   include_tasks: debian.yaml
   when: ansible_os_family == "Debian"
 
+- name: Deploy OpenLiteSpeed on RHEL-like
+  include_tasks: rhel.yaml
+  when: ansible_os_family == "RedHat"
+
 - name: Start and enable openlitespeed service
   service:
     name: lshttpd

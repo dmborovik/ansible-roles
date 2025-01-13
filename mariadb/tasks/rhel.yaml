@@ -5,7 +5,7 @@
     description: MariaDB repository
     file: MariaDB
     baseurl: https://dlm.mariadb.com/repo/mariadb-server/{{ version_MariaDB }}/yum/rhel/$releasever/$basearch
-    gpgkey: file:///etc/pki/rpm-gpg/MariaDB-MaxScale-GPG-KEY
+    gpgkey: https://downloads.mariadb.com/MariaDB/RPM-GPG-KEY-MariaDB
     gpgcheck: yes
     module_hotfixes: 1 # Need for AlmaLinux 8
 

@@ -4,6 +4,10 @@
   include_tasks: arch.yaml
   when: ansible_os_family == "Archlinux"
 
+- name: Install Nginx on RHEL-like
+  include_tasks: rhel.yaml
+  when: ansible_os_family == "RedHat"
+
 - name: Start and enable Nginx
   service:
     name: nginx
