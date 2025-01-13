@@ -3,3 +3,16 @@
 - name: Install lsphp{{ lsphp_version }} on Debian-like
   include_tasks: debian.yaml
   when: ansible_os_family == "Debian"
+
+- name: Install lsphp{{ lsphp_version }} on RHEL-like
+  include_tasks: rhel.yaml
+  when: ansible_os_family == "RedHat"
+
+- name: Set link on lsphp{{ lsphp_version }}
+  file:
+    src: /usr/local/lsws/lsphp83/bin/lsphp
+    dest: /usr/local/lsws/lsphp74/bin/lsphp
+    owner: root
+    group: root
+    state: link
+    force: yes
