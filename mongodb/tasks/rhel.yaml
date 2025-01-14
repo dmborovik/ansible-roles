@@ -1,0 +1,15 @@
+- name: add MongoDB repository
+  yum_repository:
+    name: mongodb-org-8.0
+    description: MongoDB repository
+    file: mongodb
+    baseurl: https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/{{ version_mongodb }}/x86_64/
+    gpgkey: https://www.mongodb.org/static/pgp/server-8.0.asc
+    gpgcheck: yes
+    module_hotfixes: 1 # Need for AlmaLinux 8
+
+- name: Install mongodb
+  dnf:
+    name: mongodb-org
+    state: present
+    update_cache: yes
