@@ -8,6 +8,7 @@ mariadb
 
 - **Almalinux:** 8/9
 - **Arch**
+- **CentOS Stream:** 9
 - **Debian:** 12
 - **Ubuntu:** 22
 

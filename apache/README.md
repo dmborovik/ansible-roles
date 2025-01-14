@@ -8,7 +8,7 @@ apache
 
 - **Almalinux:** 8/9
 - **Arch:**
-- **CentOS Stream:** 9
+- **CentOS Stream:** 9|10
 - **Ubuntu:** 22
 
 Пример плэйбука

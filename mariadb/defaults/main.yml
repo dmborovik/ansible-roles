@@ -1,6 +1,6 @@
 ---
 # defaults file for mariadb
-version_MariaDB: 11.5
+version_MariaDB: 11.6
 mysql_root_pass: SuperSecretPass
 
 secure_install: True
