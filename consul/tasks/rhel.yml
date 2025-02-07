@@ -1,0 +1,56 @@
+- name: Open firewall ports
+  firewalld:
+    port: "{{ item }}/tcp" 
+    state: enabled
+    permanent: True
+  register: firewall
+  with_items:
+    - 8300
+    - 8301
+    - 8302
+    - 8400
+    - 8500
+    - 8600
+
+- name: Reload firewall 
+  service:
+    name: firewalld
+    state: reloaded
+  when: firewall is changed
+
+- name: Disable SELinux
+  selinux:
+    state: disabled
+  register: selinux
+
+- name: Apply SELiux property
+  reboot:
+    msg: "Reboot for apply SELinux settings..."
+    connect_timeout: 5
+    reboot_timeout: 300
+  when: selinux is changed
+
+- name: Install prerequstions
+  dnf:
+    name: "{{ item }}"
+    state: present 
+  with_items:
+    - dnf-plugins-core
+
+- name: Add consul repo
+  yum_repository:
+    name: hashicorp
+    description: Hashicorp Test - $basearch
+    file: hashicorp
+    baseurl: https://rpm.releases.hashicorp.com/RHEL/$releasever/$basearch/stable
+    gpgkey: https://rpm.releases.hashicorp.com/gpg
+    gpgcheck: yes
+
+- name: Install consul
+  dnf:
+    name: consul 
+    state: present
+    update_cache: yes
+
+    
+  

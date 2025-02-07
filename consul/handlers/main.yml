@@ -1,0 +1,7 @@
+---
+# handlers file for consul
+- name: Restart Consul
+  service:
+    name: consul
+    state: restarted
+    enabled: true

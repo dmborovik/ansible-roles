@@ -1,0 +1,22 @@
+---
+# tasks file for consul
+- name: Deploy consul on RHEL
+  include_tasks: rhel.yml
+  when: ansible_os_family =="RedHat"
+
+- name: Take key for consul cluster
+  shell: "consul keygen"
+  register: key_consul  
+  run_once: true
+
+- name: delete old keyring
+  shell: "rm -rf /opt/consul/serf/*.keyring"
+
+- name: Set consul cluster
+  template:
+    src: consul.hcl
+    dest: /etc/consul.d/consul.hcl
+    owner: consul
+    group: consul
+    mode: 0644
+  notify: Restart Consul

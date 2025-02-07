@@ -1,0 +1,4 @@
+---
+# defaults file for consul
+datacenter: "my-dc-1"
+size_cluster: "{{ groups['cluster'] | length }}"
