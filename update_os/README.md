@@ -8,6 +8,7 @@ update_os
 
 - **Almalinux:** 8|9
 - **ArchLinux**
+- **CentOS Stream:** 9
 - **Ubuntu:** 22|24
 
 Пример плэйбука
