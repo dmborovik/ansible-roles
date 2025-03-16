@@ -1,13 +1,81 @@
-- name: Install lsphp{{ lsphp_version }}
-  dnf:
-    name: lsphp{{ lsphp_version }}
-    state: present
-    update_cache: yes
+---
+- name: Check if EPEL repository is enabled
+  command: dnf repolist enabled | grep epel
+  register: epel_repo_check
+  ignore_errors: yes
+  changed_when: false
 
-- name: Install lsphp{{ lsphp_version }} modules
+- name: Install EPEL repository if not present
   dnf:
-    name: "lsphp{{ lsphp_version }}-{{ item }}"
+    name: epel-release
     state: present
+  when: epel_repo_check.rc == 0 
+
+- name: Check if LiteSpeed repository is enabled
+  command: dnf repolist enabled | grep litespeed
+  register: litespeed_repo_check
+  ignore_errors: yes
+  changed_when: false
+
+- name: Add LiteSpeed repository if not present
+  block:
+    - name: Add litespeed repository
+      yum_repository:
+        name: litespeed
+        description: OpenLiteSpeed repository
+        file: litespeed
+        baseurl: http://rpms.litespeedtech.com/centos/$releasever/$basearch
+        gpgkey: http://rpms.litespeedtech.com/centos/RPM-GPG-KEY-litespeed
+        gpgcheck: yes
+        module_hotfixes: 1 # Need for AlmaLinux 8
+
+  when: litespeed_repo_check.rc == 0  # Репозиторий не найден
+
+- name: Update dnf cache
+  dnf:
     update_cache: yes
-  with_items: "{{ lsphp_modules }}"
-  when: lsphp_modules is defined
+  tags: update-cache
+
+- name: Ensure lsphp is installed
+  block:
+    - name: Install lsphp{{ lsphp_version }}
+      dnf:
+        name: "lsphp{{ lsphp_version }}"
+        state: present
+      tags: lsphp
+
+    - name: Check lsphp version
+      command: /usr/local/lsws/lsphp{{ lsphp_version}}/bin/lsphp -v
+      register: lsphp_version_output
+      changed_when: false
+
+    - name: Display lsphp version
+      debug:
+        msg: "{{ lsphp_version_output.stdout }}"
+  rescue:
+    - name: Notify about lsphp installation failure
+      debug:
+        msg: "Failed to install lsphp. Please check logs."
+
+- name: Ensure lsphp modules are installed
+  block:
+    - name: Install lsphp{{ lsphp_version }} modules
+      dnf:
+        name: "lsphp{{ lsphp_version }}-{{ item }}"
+        state: present
+      with_items: "{{ lsphp_modules }}"
+      when: lsphp_modules is defined
+      tags: lsphp-modules
+
+    - name: Check lsphp modules
+      shell: "/usr/local/lsws/lsphp{{ lsphp_version }}/bin/php -m"
+      register: lsphp_modules_output
+      changed_when: false
+
+    - name: Display lsphp modules
+      debug:
+        msg: "{{ lsphp_modules_output.stdout }}"
+  rescue:
+    - name: Notify about lsphp modules installation failure
+      debug:
+        msg: "Failed to install lsphp modules. Please check logs."

@@ -3,16 +3,36 @@
 - name: Install lsphp{{ lsphp_version }} on Debian-like
   include_tasks: debian.yaml
   when: ansible_os_family == "Debian"
+  tags: debian
 
 - name: Install lsphp{{ lsphp_version }} on RHEL-like
   include_tasks: rhel.yaml
   when: ansible_os_family == "RedHat"
+  tags: rhel
 
-- name: Set link on lsphp{{ lsphp_version }}
-  file:
-    src: /usr/local/lsws/lsphp83/bin/lsphp
-    dest: /usr/local/lsws/lsphp74/bin/lsphp
-    owner: root
-    group: root
-    state: link
-    force: yes
+- name: Fail if OS is not supported
+  fail:
+    msg: "Unsupported OS family: {{ ansible_os_family }}"
+  when: ansible_os_family not in ["Debian", "RedHat"]
+
+- name: Check if lsphp binary exists
+  stat:
+    path: "/usr/local/lsws/lsphp{{ lsphp_version }}/bin/lsphp"
+  register: lsphp_binary
+
+- name: Ensure link is created
+  block:
+    - name: Set link on lsphp{{ lsphp_version }}
+      file:
+        src: "/usr/local/lsws/lsphp{{ lsphp_version }}/bin/lsphp"
+        dest: "/usr/local/lsws/lsphp/bin/lsphp"
+        owner: root
+        group: root
+        state: link
+        force: yes
+      when: lsphp_binary.stat.exists
+      tags: link
+  rescue:
+    - name: Notify about link creation failure
+      debug:
+        msg: "Failed to create symbolic link for lsphp. Please check paths."

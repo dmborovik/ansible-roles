@@ -1,13 +1,49 @@
-- name: Install lsphp{{ lsphp_version }}
+---
+- name: Update apt cache
   apt:
-    name: lsphp{{ lsphp_version }}
-    state: present
     update_cache: yes
+  tags: update-cache
 
-- name: Install lsphp{{ lsphp_version }} modules
-  apt:
-    name: "lsphp{{ lsphp_version }}-{{ item }}"
-    state: present
-    update_cache: yes
-  with_items: "{{ lsphp_modules }}"
-  when: lsphp_modules is defined
+- name: Ensure lsphp is installed
+  block:
+    - name: Install lsphp{{ lsphp_version }}
+      apt:
+        name: lsphp{{ lsphp_version }}
+        state: present
+      tags: lsphp
+
+    - name: Check lsphp version
+      command: lsphp{{ lsphp_version }} --version
+      register: lsphp_version_output
+      changed_when: false
+
+    - name: Display lsphp version
+      debug:
+        msg: "{{ lsphp_version_output.stdout }}"
+  rescue:
+    - name: Notify about lsphp installation failure
+      debug:
+        msg: "Failed to install lsphp. Please check logs."
+
+- name: Ensure lsphp modules are installed
+  block:
+    - name: Install lsphp{{ lsphp_version }} modules
+      apt:
+        name: "lsphp{{ lsphp_version }}-{{ item }}"
+        state: present
+      with_items: "{{ lsphp_modules }}"
+      when: lsphp_modules is defined
+      tags: lsphp-modules
+
+    - name: Check lsphp modules
+      shell: "lsphp{{ lsphp_version }} -m"
+      register: lsphp_modules_output
+      changed_when: false
+
+    - name: Display lsphp modules
+      debug:
+        msg: "{{ lsphp_modules_output.stdout }}"
+  rescue:
+    - name: Notify about lsphp modules installation failure
+      debug:
+        msg: "Failed to install lsphp modules. Please check logs."
