@@ -15,19 +15,15 @@
 - name: Start and enable MariaDB
   service:
     name: mariadb
-    state: started
+    state: restarted
     enabled: True
 
 - name: Update root password
   mysql_user:
     name: root
-    host: "{{ item }}"
+    host_all: yes
     password: "{{ mysql_root_pass }}"
     login_unix_socket: "{{ mysql_socket }}"
-  with_items:
-    - 127.0.0.1
-    - ::1
-    - localhost
 
 - name: set .my.cnf file
   template:
@@ -43,7 +39,7 @@
         name: ""
         host: "{{ item }}"
         state: absent
-      with_items:
+      loop:
         - localhost
         - "{{ ansible_nodename }}"
 
