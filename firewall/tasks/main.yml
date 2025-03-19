@@ -1,0 +1,11 @@
+---
+# tasks file for firewall
+- name: Check if UFW is enabled 
+  command: ufw status
+  register: ufw_status
+  changed_when: false
+  failed_when: ufw_status.rc > 1
+
+- name: Configure UFW
+  include_tasks: ufw.yaml
+  when: "'inactive' not in ufw_status.stdout"

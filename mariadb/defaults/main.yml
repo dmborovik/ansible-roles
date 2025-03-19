@@ -1,20 +1,17 @@
 ---
 # defaults file for mariadb
-version_MariaDB: 11.6
+version_MariaDB: 11.4
 mysql_root_pass: SuperSecretPass
 
-secure_install: True
-create_db: False
-create_user: False
+secure_install: true
+create_db: false
+create_user: false
 
 db_name: db_name
 db_user: db_user
 db_user_pass: SuperPassword
 
-mysql_socket: |-
-  {%- if ansible_os_family == "RedHat" -%}
-  /var/lib/mysql/mysql.sock
-  {%- elif ansible_os_family == "Archlinux" or ansible_os_family == "Debian" -%}
-  /run/mysqld/mysqld.sock
-  {%- endif -%}
+mysql_socket:  >-
+  {% if ansible_os_family == "RedHat" %}/var/lib/mysql/mysql.sock
+  {% else %}/run/mysqld/mysqld.sock{% endif %}
 

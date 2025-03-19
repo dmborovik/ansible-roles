@@ -1,0 +1,9 @@
+---
+# tasks file for install_depend
+- name: Install dependencies on Debian-like
+  apt:
+    name: 
+      "{{ packages }}"
+    state: present
+    update_cache: yes
+  when: packages is defined and ansible_os_family == "Debian"
