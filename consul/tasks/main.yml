@@ -14,9 +14,25 @@
 
 - name: Set consul cluster
   template:
-    src: consul.hcl
+    src: consul.hcl.j2
     dest: /etc/consul.d/consul.hcl
-    owner: consul
-    group: consul
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
     mode: 0644
-  notify: Restart Consul
+
+- name: Start consul service
+  service:
+    name: consul
+    state: started
+    enabled: true
+
+- name: Wait for Consul API to become available
+  uri:
+    url: "http://localhost:8500/v1/status/leader"
+    method: GET
+    status_code: 200
+  register: consul_health
+  retries: 5
+  delay: 2
+  until: consul_health.status == 200
+  tags: [healthcheck]
