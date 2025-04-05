@@ -2,3 +2,15 @@
 # defaults file for consul
 datacenter: "my-dc-1"
 size_cluster: "{{ groups['cluster'] | length }}"
+
+consul_version: "1.15.4"
+consul_user: "consul"
+consul_group: "consul"
+consul_config_dir: "/etc/consul.d"
+consul_data_dir: "/opt/consul"
+consul_bind_address: "0.0.0.0"
+consul_client_address: "127.0.0.1"
+consul_node_role: "server"  # или client
+
+consul_command_args: >-
+  agent -config-dir={{ consul_config_dir }}
