@@ -1,38 +1,52 @@
-Role Name
-=========
+# Ansible Firewall Configuration Role
 
-A brief description of the role goes here.
+Эта роль Ansible автоматически настраивает правила файервола (открытие определенных портов и сервисов) на целевых хостах. Она определяет, используется ли `firewalld` или `ufw`, и применяет конфигурацию с помощью соответствующего инструмента.
 
-Requirements
-------------
+## Возможности
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+* Автоматическое определение активного файервола (`firewalld` или `ufw`).
+* Настройка правил на основе списка разрешенных портов и сервисов.
+* Поддержка указания файервола по умолчанию, если ни один не активен.
+* Идемпотентность: выполнение роли повторно не должно приводить к нежелательным изменениям.
 
-Role Variables
---------------
+## Поддерживаемые платформы
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Роль протестирована на:
 
-Dependencies
-------------
+* **AlmaLinux 8**, где `firewalld` является файерволом по умолчанию.
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+## Требования
 
-Example Playbook
-----------------
+* Ansible версии 2.9 или выше.
+* Для управления `ufw` требуется коллекция `community.general`. Установите ее с помощью команды:
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+    ```bash
+    ansible-galaxy collection install community.general
+    ```
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+* Пользователь Ansible должен иметь привилегии `become` (sudo) для управления службами и правилами файервола.
 
-License
--------
+## Переменные роли
 
-BSD
+Основные переменные определены в `defaults/main.yml`:
 
-Author Information
-------------------
+| Переменная                     | Описание                                                                                                | Тип   | Значение по умолчанию                |
+| :----------------------------- | :-------------------------------------------------------------------------------------------------------- | :---- | :----------------------------------- |
+| `firewall_ports`       | Список TCP/UDP портов для открытия. Формат элемента: `"порт/протокол"` (например, `"22/tcp"`) или `"порт"` (по умолчанию TCP). | list  | `["22/tcp", "80/tcp", "443/tcp"]`    |
+| `firewall_services`    | Список стандартных имен сервисов для открытия (например, "ssh", "http", "https").                               | list  | `["ssh", "http", "https"]`           |
+| `firewall_default_if_none`     | Какой файервол установить и включить, если на хосте не обнаружено ни `firewalld`, ни `ufw` в активном состоянии. Возможные значения: `'firewalld'`, `'ufw'`, `'none'` (не выполнять никаких действий, если файервол не активен).| string| `'firewalld'`|
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Вы можете переопределить эти переменные в вашем плейбуке, инвентаре, group\_vars или host\_vars.
+
+## Использование
+
+Пример использования роли в плейбуке:
+
+```yaml
+---
+- name: Применить конфигурацию файервола
+  hosts: your_servers # Замените на вашу группу хостов
+  become: yes         # Требуется повышение привилегий
+
+  roles:
+    - your_firewall_role # Укажите путь к вашей роли, если она не в стандартном месте

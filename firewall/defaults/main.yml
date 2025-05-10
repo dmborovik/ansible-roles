@@ -1,2 +1,8 @@
 ---
 # defaults file for firewall
+
+# Здесь можно задать используемый файрволл по умолчанию (none, firewalld, ufw)
+firewall_default_if_none : 'none' 
+
+#Необходимые для открытия порты 
+firewall_ports: []

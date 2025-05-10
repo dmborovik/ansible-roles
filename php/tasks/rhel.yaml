@@ -9,14 +9,19 @@
     name: "http://rpms.remirepo.net/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm"
     state: present
 
+- name: Enable remi module for PHP
+  command: dnf module enable php:remi-{{ php_version }} -y
+  args: 
+    creates: /etc/dnf/modules.d/php.module
+
 - name: Install PHP-"{{ php_version }}"                     
   dnf:
-    name: '@php:remi-{{php_version}}'
+    name: '@php:remi-{{ php_version }}'
     state: present
 
-- name: Install php-modules
+- name: Install PHP modules
   dnf:
     name: "{{ item }}"
     state: present
-  with_items: "{{ php_modules }}"
-  when: php_modules is defined
+  loop: "{{ php_modules }}"
+  when: php_modules | length > 0

@@ -1,2 +1,6 @@
 ---
 # defaults file for install_depend
+list_dependens:
+  common: []          # Пакеты, устанавливаемые на всех поддерживаемых ОС, если нет специфичных
+  debian: []          # Пакеты только для Debian-подобных
+  redhat: []          # Пакеты только для RedHat-подобных

@@ -1,9 +1,42 @@
 ---
 # tasks file for install_depend
-- name: Install dependencies on Debian-like
-  apt:
-    name: 
-      "{{ packages }}"
-    state: present
-    update_cache: yes
-  when: packages is defined and ansible_os_family == "Debian"
+
+- name: Set combined_packages_dict (Apply default filter)
+  set_fact:
+    combined_packages_dict: "{{ list_dependens | default({}) }}"
+
+- name: Set os_family_lower (Apply lower filter)
+  set_fact:
+    os_family_lower: "{{ ansible_os_family | lower }}"
+
+- name: Set specific_packages_list (Call .get method)
+  set_fact:
+    specific_packages_list: "{{ combined_packages_dict.get(os_family_lower, []) }}"
+
+- name: Set final_packages_for_this_os
+  set_fact:
+    packages_to_install: |
+      {% set common_pkgs = combined_packages_dict.get('common', []) %}
+      {% if specific_packages_list is defined and specific_packages_list | length > 0 %}
+        {{ specific_packages_list }}
+      {% elif common_pkgs is defined and common_pkgs | length > 0 %}
+        {{ common_pkgs }}
+      {% else %}
+        []
+      {% endif %}
+  # Этот таск выполнится только если specific_packages_list был успешно установлен
+  when: specific_packages_list is defined
+
+- name: Include package installation tasks for Debian
+  include_tasks: debian.yml 
+  when: |
+    ansible_os_family == "Debian" and
+    packages_to_install is defined and
+    packages_to_install | length > 0
+
+- name: Include package installation tasks for RedHat
+  include_tasks: redhat.yml
+  when: |
+    ansible_os_family == "RedHat" and
+    packages_to_install is defined and
+    packages_to_install | length > 0  

@@ -1,3 +1,13 @@
+- name: Import key for Remi repo
+  rpm_key:
+    key: "http://rpms.remirepo.net/enterprise/{{ ansible_distribution_major_version }}/RPM-GPG-KEY-remi"
+    state: present
+
+- name: add remi repo for php
+  dnf: 
+    name: "http://rpms.remirepo.net/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm"
+    state: present
+
 - name: add OpenLiteSpeed Repository
   yum_repository:
     name: litespeed
@@ -13,3 +23,4 @@
     name: openlitespeed
     state: present
     update_cache: yes
+    skip_broken: yes

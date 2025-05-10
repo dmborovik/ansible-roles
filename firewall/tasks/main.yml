@@ -1,11 +1,16 @@
 ---
 # tasks file for firewall
-- name: Check if UFW is enabled 
-  command: ufw status
-  register: ufw_status
-  changed_when: false
-  failed_when: ufw_status.rc > 1
 
-- name: Configure UFW
+# Определение какой файрвол используется
+- name: Detect type of firewall 
+  include_tasks: detect_firewall.yaml
+
+# Настройка firewalld
+- name: Configure firewalld
+  include_tasks: firewalld.yaml
+  when: firewall_type == 'firewalld'
+
+# Настройка ufw  
+- name: Configure ufw 
   include_tasks: ufw.yaml
-  when: "'inactive' not in ufw_status.stdout"
+  when: firewall_type == 'ufw'

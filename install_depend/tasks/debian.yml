@@ -1,0 +1,5 @@
+- name: Install required packages (Debian)
+  apt:
+    name: "{{ packages_to_install }}"
+    state: present
+    update_cache: yes

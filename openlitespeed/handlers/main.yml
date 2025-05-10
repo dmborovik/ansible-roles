@@ -1,4 +1,6 @@
 ---
 # handlers file for openlitespeed
 - name: restart_openlitespeed
-  shell: systemctl restart lshttpd
+  service:
+    name: lshttpd
+    state: restarted 

@@ -14,6 +14,14 @@
     state: started
     enabled: true
 
+- name: Validate listener_port
+  assert:
+    that: 
+      - listener_port is defined
+      - listener_port | int >= 1 and listener_port | int <= 65535
+    msg: "listener_port must be a valid port (1-65535)"
+  when: listener_port is defined
+
 - name: Set default listener port
   lineinfile:
     path: /usr/local/lsws/conf/httpd_config.conf

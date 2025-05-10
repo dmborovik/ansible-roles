@@ -8,5 +8,5 @@
   pacman:
     name: "{{ item }}"
     state: present
-  with_items: "{{ php_modules }}"
-  when: php_modules is defined
+  loop: "{{ php_modules }}"
+  when: php_modules | length > 0

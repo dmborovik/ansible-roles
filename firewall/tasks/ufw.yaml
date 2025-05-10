@@ -1,14 +1,23 @@
-- name: Allow services
+- name: Ensure ufw is enabled # Убеждаемся, что ufw запущен
   ufw:
-    rule: allow
-    name: "{{ services }}"
-  when: services is defined
+    state: enabled
 
-- name: Allow ports
+- name: Allow specified ports in ufw # Добавление разрешенных портов
+  ufw: 
+    rule: allow
+    port: "{{ item | split('/') | first }}"
+    proto: "{{ item | split('/') | last | default('tcp') }}"
+    state: enabled
+  loop: "{{ firewall_ports }}"
+  when: firewall_ports is defined and firewall_ports | length > 0
+
+
+- name: Allow specified services in ufw # Добавление разрешенных сервисов
   ufw:
     rule: allow
-    port: "{{ ports }}"
-    proto: tcp
-  when: ports is defined
+    service: "{{ item }}"
+    state: enabled
+  loop: "{{ firewall_services }}"
+  when: firewall_services is defined  and firewall_services | length > 0
 
   

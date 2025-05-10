@@ -1,3 +1,5 @@
 ---
 # defaults file for php
+php_modules: []
+php_ini_path: /etc/php.ini
 php_version: 8.4

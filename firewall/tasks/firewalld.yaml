@@ -1,0 +1,24 @@
+- name: Ensure firewalld is running and enabled #Убеждаемся, что firewalld включен
+  systemd_service: 
+    name: firewalld
+    state: started
+    enabled: true
+
+- name: Allow speciefied ports in firewalld # Добавление необходимых портов 
+  firewalld: 
+    port: "{{ item }}"
+    state: enabled
+    permanent: true
+  loop: "{{ firewall_ports }}"
+  notify: Reload firewalld
+
+- name: Allow specified services in firewalld # Добавление разрешенных сервисов
+  firewalld:
+    service: "{{ item }}"
+    state: enabled
+    permanent: true 
+  loop: "{{ firewall_services }}"
+  notify: Reload firewalld
+
+- name: Reload firewalld to apply permanent changes  # Применить изменения, если были постоянные изменения
+  meta: flush_handlers 
