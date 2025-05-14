@@ -1,11 +1,5 @@
-- name: Install Apache
+- name: Install Apache on Debian
   apt:
     name: apache2
     state: present
-    update_cache: True
-
-- name: Start Apache service
-  service:
-    name: apache2
-    state: started
-    enabled: true
+    update_cache: true

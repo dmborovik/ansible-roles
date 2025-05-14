@@ -1,10 +1,5 @@
-- name: Install apache
+- name: Install Apache on RHEL
   dnf:
     name: httpd
-    state: latest
-    
-- name: start apache service
-  service:
-    name: httpd
-    state: started
-    enabled: true
+    state: present
+    update_cache: true
