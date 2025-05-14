@@ -2,12 +2,28 @@
 # tasks file for apache
 - name: Deploy apache on RHEL
   include_tasks: rhel.yaml
-  when: ansible_os_family == "RedHat"  
+  when: ansible_os_family | lower == "redhat"  
 
 - name: Deploy apache on Arch
   include_tasks: arch.yaml
-  when: ansible_os_family == "Archlinux"
+  when: ansible_os_family | lower == "archlinux"
 
 - name: Deploy apache on Debian/Ubuntu
   include_tasks: debian.yaml
-  when: ansible_os_family == "Debian"
+  when: ansible_os_family | lower  == "debian"
+
+- name: Fail when OS is unsupported
+  fail:
+    msg: "Unsupported OS family: {{ ansible_os_family }}"
+  when: ansible_os_family not in ["RedHat", "Debian", "Archlinux"]
+
+- name: Ensure Apache is running
+  service:
+    name: "{{ apache_service_name }}"
+    state: started
+    enabled: true
+
+- name: Ensure Apache is responding on port 80
+  wait_for:
+    port: 80
+    timeout: 10
