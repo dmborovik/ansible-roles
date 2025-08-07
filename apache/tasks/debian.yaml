@@ -1,5 +1,0 @@
-- name: Install Apache on Debian
-  apt:
-    name: apache2
-    state: present
-    update_cache: true

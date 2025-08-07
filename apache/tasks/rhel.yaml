@@ -1,5 +1,0 @@
-- name: Install Apache on RHEL
-  dnf:
-    name: httpd
-    state: present
-    update_cache: true

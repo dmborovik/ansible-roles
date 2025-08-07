@@ -1,2 +1,16 @@
 ---
 # vars file for apache
+apache_package_name:
+  redhat: httpd
+  debian: apache2
+  archlinux: apache
+
+apache_service_name:
+  redhat: httpd
+  debian: apache2
+  archlinux: httpd
+
+apache_ctl_command:
+  redhat: httpd -t
+  debian: apache2ctl configtest
+  archlinux: httpd -t

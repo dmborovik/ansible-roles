@@ -20,14 +20,8 @@
 ## Переменные по умолчанию
 
 ```yaml
-#defaults/main.yml
-apache_service_name: "{{ 'apache2' if ansible_os_family == 'Debian' else 'httpd' }}"
-```
-
-Можно переопределить имя сервиса, если используется другой init-скрипт или имя пакета:
-
-```yaml
-apache_service_name: my-custom-apache
+`apache_package_name`: имя пакета Apache для установки
+`apache_service_name`: имя сервиса Apache
 ```
 
 ## Использование
@@ -39,18 +33,6 @@ apache_service_name: my-custom-apache
   become: true
   roles:
     - apache
-```
-
-## Структура роли
-
-```text
-tasks/
-├── main.yml           # Основная логика + запуск Apache
-├── rhel.yaml          # Установка Apache на RHEL/AlmaLinux/CentOS
-├── debian.yaml        # Установка Apache на Debian/Ubuntu
-└── arch.yaml          # Установка Apache на Arch
-defaults/
-└── main.yml           # Значение apache_service_name
 ```
 
 ## Лицензия

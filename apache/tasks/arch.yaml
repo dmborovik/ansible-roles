@@ -1,5 +1,0 @@
-- name: Install Apache on Arch
-  pacman:
-    name: apache
-    state: present
-    update_cache: true
