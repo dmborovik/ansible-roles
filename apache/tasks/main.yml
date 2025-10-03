@@ -3,29 +3,42 @@
 - name: Fail when OS is unsupported
   fail:
     msg: "Unsupported OS family: {{ ansible_os_family }}"
-  when: ansible_os_family not in ["RedHat", "Debian", "Archlinux"]
+  when: ansible_os_family not in supported_os_families
 
 - name: Ensure Apache service is installed
   package:
     name: "{{ apache_package_name[ansible_os_family|lower] }}"
     state: present
+  tags:
+    - install
 
 - name: Ensure Apache is running
   service:
     name: "{{ apache_service_name[ansible_os_family|lower] }}"
     state: started
     enabled: true
-
+  tags:
+    - service
+    
 - name: Ensure Apache is responding on port 80
   wait_for:
-    port: 80
+    port: "{{ apache_port }}"
     timeout: 10
     delay: 5
     state: started
+  register: apache_port_check
+  failed_when: apache_port_check.state != 'started'
+  ignore_errors: true
+
+- name: Log failure if Apache is not responding
+  debug:
+    msg: "Apache is not responding on port {{ apache_port || default(80) }}"
+  when: apache_port_check.state != 'started'
 
 - name: Validate Apache configuration
-  command: "{{ apache_ctl_command[ansible_os_family|lower] }}"
+  shell: "{{ apache_ctl_command[ansible_os_family|lower] }}"
   register: apache_config_test
+  changed_when: false
   failed_when: apache_config_test.rc != 0
 
 - name: Restart Apache service 

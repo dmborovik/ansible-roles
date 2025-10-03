@@ -1,5 +1,10 @@
 ---
 # vars file for apache
+supported_os_families:
+  - RedHat
+  - Debian
+  - ArchLinux
+  
 apache_package_name:
   redhat: httpd
   debian: apache2
